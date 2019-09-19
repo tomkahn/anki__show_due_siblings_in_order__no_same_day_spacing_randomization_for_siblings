@@ -1,0 +1,12 @@
+Say you have note1 (with the new cards 1,2,3) and note2 (with the new cards A,B). Anki will show you the cards in this order: 1,A,2,B,3 even if you have disabled "Bury related new cards until the next day". There is no option that allows you to show the cards in the order 1,2,3,A,B. This add-on allows you to disable this same-day spacing from the menu "Study".
+
+<b>other authors</b>
+- <a href="https://github.com/lovac42/ReMemorize" rel="nofollow">lovac42</a>
+- <a href="https://www.basiskarten.de/" rel="nofollow">Thomas Kahn</a>
+
+<b>technical background</b>
+Same-day spacing in Anki occurs because in the function  <a href="https://github.com/dae/anki/blob/master/anki/sched.py#L1310" rel="nofollow">_burySiblings</a> there is code that is described as "if bury disabled, we still discard to give same-day spacing".
+
+<b>compatibility</b>
+- This add-on overwrites the built-in function "_burySiblings". It is not compatible to other add-ons that also overwrite/modify this function. As far as I see at the moment the only other add-on that changes this function is <a href="https://ankiweb.net/shared/info/413416269" rel="nofollow">Bury related notes</a>.
+- if future versions of Anki change the "_burySiblings" function you will run into problems.
