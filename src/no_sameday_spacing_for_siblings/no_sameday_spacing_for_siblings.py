@@ -42,7 +42,7 @@ and (queue=0 or (queue=2 and due<=?))""",
         if queue == 2:
             if not nospacing:
                 if buryRev:
-                    tooltip('conflicting settings in add-on and deck settings')
+                    tooltip(msg_tooltip_ger if German else msg_tooltip_en)
                     toBury.append(cid)
                 # if bury disabled, we still discard to give same-day spacing
                 try:
@@ -72,18 +72,8 @@ schedv1._burySiblings = my_burySiblings
 if not anki20:
     schedv2._burySiblings = my_burySiblings
 
-
-msg_ger = (u"Option aktiviert! Karten, die zu derselben Notiz gehören, werden "
-           u"jetzt unmittelbar nacheinander abgefragt.<br><br>"
-           u"Um bestimmte einzelne Karten erst morgen abfragen zu lassen, kannst du, "
-           u"wenn du danach gefragt wirst, einfach die \"-\"-Taste (Bindestrich-Taste) "
-           u"auf deiner Tastatur drücken. Das ist z.B. sinnvoll, wenn du gerade gefragt "
-           u"wurdest: \"Was heißt 'Kuchen' auf Englisch?\" Und dann direkt danach: \"Was "
-           u"bedeutet 'cake' auf Deutsch?\"<br><br>Weitere Infos zu dieser Funktion findest "
-           u"du auf der Seite <a href=\"https://ankiweb.net/shared/info/268644742\">des "
-           u"dazugehörigen Anki-Addons</a>.")
-msg_en = (u"Option has been activated! Sibling Cards (= cards belonging to the same note) "
-          u"will now be asked right after each other.<br><br>To put the review of specific "
+msg_en = (u"Option has been activated! Sibling Cards (= cards belonging to the same note) which are new "
+          u"will now be asked right after each other.<br><br>Protip: To put the review of specific "
           u"cards off until tomorrow press the \"-\"-key when you are asked about them. "
           u"This makes sense in situations where you've just been asked: \"What does 'Kuchen' "
           u"mean in Englisch?\" And the next question is: \"What does 'cake' mean in "
@@ -91,6 +81,19 @@ msg_en = (u"Option has been activated! Sibling Cards (= cards belonging to the s
           u"More information about this option can be found on the page "
           u"<a href=\"https://ankiweb.net/shared/info/268644742\">"
           u"of the corresponding Anki-Add-On</a>.")
+msg_ger = (u"Option aktiviert! Karten, die zu derselben Notiz gehören (= verwandte Karten bzw. "
+           u"\"sibling cards\") und neu sind, werden jetzt unmittelbar nacheinander abgefragt. (Die Reihenfolge "
+           u"fälliger verwandter Karten wird durch das Add-On hingegen nicht beinflusst.)<br><br>"
+           u"Tipp: Um bestimmte einzelne Karten erst morgen abfragen zu lassen, kannst du, "
+           u"wenn du danach gefragt wirst, einfach die \"-\"-Taste (Bindestrich-Taste) "
+           u"auf deiner Tastatur drücken. Das ist z.B. sinnvoll, wenn du gerade gefragt "
+           u"wurdest: \"Was heißt 'Kuchen' auf Englisch?\" Und dann direkt danach: \"Was "
+           u"bedeutet 'cake' auf Deutsch?\"<br><br>Weitere Infos zu dieser Funktion findest "
+           u"du auf der Seite <a href=\"https://ankiweb.net/shared/info/268644742\">des "
+           u"dazugehörigen Anki-Addons</a>.")
+msg_tooltip_en  = (u"Found conflicting settings in \"no same day sibling spacing\"-add-on and deck settings.")
+msg_tooltip_ger = (u"Widersprüchliche Einstellungen in den Stapel-Optionen und dem \"Verwandte "
+                   u"neue Karten direkt nacheinander abfragen\"-Add-On gefunden.")
 
 
 def toggleSameDaySpacing():
@@ -98,7 +101,8 @@ def toggleSameDaySpacing():
     nospacing ^= True
     mw.col.conf['268644742_intraday_spacing'] ^= True
     mw.col.setMod()
-    showInfo(msg_ger if German else msg_en)
+    if nospacing:
+        showInfo(msg_ger if German else msg_en)
     mw.reset()
 
 
@@ -116,7 +120,7 @@ def add_same_day_spacing_to_menu():
             action = mw.menuBar().insertMenu(mw.form.menuTools.menuAction(), mw.menuView)
             m = mw.menuView
 
-        label_ger = u'Zusammengehörende Karten direkt nacheinander abfragen'
+        label_ger = u'Verwandte neue Karten direkt nacheinander abfragen'
         label_en = u'change scheduler - no same-day spacing for siblings/show due siblings in order'
         a = m.addAction(label_ger if German else label_en)
         a.setCheckable(True)
